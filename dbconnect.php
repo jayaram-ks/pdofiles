@@ -1,5 +1,5 @@
 <?php 
-class DbConnection()
+class DbConnection
 {
 	protected $db_conn;
     public $db_host = 'localhost';
@@ -12,6 +12,7 @@ class DbConnection()
     	try
     	{
  			$this->db_conn = new PDO("mysql:host=$this->db_host;dbname=$this->db_name",$this->db_user,$this->db_pass);
+ 			return $this->db_conn;
     	}
     	catch(PDOexception $e)
     	{
