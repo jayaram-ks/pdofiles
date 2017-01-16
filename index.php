@@ -1,8 +1,32 @@
 <?php
 session_start();
-print_r($_SESSION);
 $error = NULL;
 $succ = NULL;
+if(isset($_POST['submitlog']))
+{
+	if(empty($_POST['username']) || empty($_POST['password']))
+	{
+		$error = "Please enter username and password";
+	}
+	else
+	{
+		include_once('manageuser.php');
+		$user = new ManageUsers();
+		$auth_uzr = $user->LoginUsers($_POST['username'],$_POST['password']);
+		if($auth_uzr == 1)
+		{
+			    $userdata = $users->GetUserInfo($_POST['username']);
+				$_SESSION['uzr'] = $userdata; 
+				$succ = "Inserted user successfully";
+				header('location:dashboard.php');
+		}
+		else
+		{
+			$error = "Invalid username and/or password.";
+		}
+	}
+}
+
 if (isset($_POST['submitf']))
 {
 
@@ -91,7 +115,16 @@ echo $error." ".$succ;
 <form method="post" action="" >
 	<table>
 		<tr>
-		<td></td>
+			<td>Login Id</td>
+			<td><input type="text" name="username" placeholder="Enter Username" value = "<?php echo $_POST['username']?? ""; ?>" required /></td>
+		</tr>
+		<tr>
+			<td>Password</td>
+			<td><input type="password" name="password" placeholder="Enter Password" value = "<?php echo $_POST['password']?? ""; ?>" required /></td>
+		</tr>
+		<tr>
+			<td><input type="submit" name="submitlog" value="Login"  /></td>
+			<td></td>
 		</tr>
 	</table>
 		
